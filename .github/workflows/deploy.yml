@@ -36,15 +36,28 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "github-actions"
 
-          # gh-pages ブランチに切り替え or 新規作成
-          git checkout gh-pages || git checkout --orphan gh-pages
-          git rm -rf .
-          git clean -fd
+          # gh-pages ブランチが存在するか確認し、なければ作成
+          if git show-ref --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
 
-          # dist ディレクトリの内容をコミットしてプッシュ
-          git --work-tree dist add --all
+          # ワークツリーのリセット（安全策）
+          git reset --hard
+
+          # クリーンアップ
+          git rm -rf . || true
+          git clean -fd || true
+
+          # dist を追加してコミット
+          mv dist/* .
+          rm -rf dist
+          git add --all
           git commit -m "Auto deploy to GitHub Pages"
+
+          # デプロイ
           git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/mio-dokuhaki/jakoolit-tech-world.git gh-pages --force
 
-          # main ブランチに戻す
+          # メインブランチに戻る
           git checkout main
