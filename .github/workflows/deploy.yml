@@ -50,14 +50,17 @@ jobs:
           git rm -rf . || true
           git clean -fd || true
 
-          # dist を追加してコミット
-          mv dist/* .
-          rm -rf dist
-          git add --all
-          git commit -m "Auto deploy to GitHub Pages"
-
-          # デプロイ
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/mio-dokuhaki/jakoolit-tech-world.git gh-pages --force
+          # dist/ がある場合のみデプロイを続行
+          if [ -d "dist" ]; then
+            mv dist/* .
+            rm -rf dist
+            git add --all
+            git commit -m "Auto deploy to GitHub Pages"
+            git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/mio-dokuhaki/jakoolit-tech-world.git gh-pages --force
+          else
+            echo "❌ dist/ directory not found. Build might have failed."
+            exit 1
+          fi
 
           # メインブランチに戻る
           git checkout main
