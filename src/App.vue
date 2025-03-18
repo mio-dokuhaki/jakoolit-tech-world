@@ -21,8 +21,8 @@
     <!-- YouTube Playlist Section -->
     <section class="youtube-section">
       <div class="youtube-container">
-        <iframe src="https://www.youtube.com/embed/videoseries?list=PLDtGd5Fw5_GjXCznR0BzCJJDIQSZJRbxx&autoplay=1"
-          title="JaKooLit YouTube Playlist" frameborder="0" allowfullscreen>
+        <iframe src="https://www.youtube.com/embed/videoseries?list=PLDtGd5Fw5_GjXCznR0BzCJJDIQSZJRbxx"
+          title="JaKooLit YouTube Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
         </iframe>
       </div>
 
